@@ -1,0 +1,2 @@
+Selected Model,Test Accuracy,Test Macro F1,Test Weighted F1,Training Samples,Test Samples
+Linear SVM,0.7082494969818913,0.6675447166823102,0.6972888518624333,1985,497

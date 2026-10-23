@@ -1,0 +1,1189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResumeIQ | Intelligent Recruitment</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+[hidden] { display: none !important; }
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.metric-card {
+  background: #f8f7ff;
+  border: 1px solid #e8e6f5;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.metric-card p {
+  color: #778096;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.metric-card h3 {
+  color: #5145d5;
+  font-size: 28px;
+  margin: 0;
+}
+
+.hr-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.hr-controls input,
+.hr-controls select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e1dfed;
+  border-radius: 10px;
+  background: white;
+}
+
+.resume-card {
+  padding: 16px;
+  margin-top: 12px;
+  border: 1px solid #e8e6f5;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+.resume-card p {
+  color: #778096;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.role-label {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #f0edff;
+  color: #5145d5;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+#extracted-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+<header>
+  ✦ &nbsp; ResumeIQ
+  <small style="font-size:10px;color:#9298ab;font-weight:500">
+    &nbsp; INTELLIGENT RECRUITMENT
+  </small>
+</header>
+
+<main>
+<section class="intro">
+  <p style="color:#7061e9;font-size:11px;font-weight:700;letter-spacing:2px">
+    SMARTER HIRING STARTS HERE
+  </p>
+  <h1>Great talent deserves<br>
+    <span style="color:#7061e9">a smarter first look.</span>
+  </h1>
+  <p>Your intelligent resume classification and recruitment platform.</p>
+</section>
+
+<!-- LOGIN AND REGISTRATION -->
+<section id="auth-section" class="workspace">
+  <form id="auth-form">
+    <p id="auth-eyebrow"
+       style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      ACCOUNT ACCESS
+    </p>
+
+    <h2 id="auth-title">Welcome back</h2>
+
+    <p id="auth-description" style="color:#778096;font-size:13px">
+      Log in to access your ResumeIQ workspace.
+    </p>
+
+    <div id="name-fields" hidden>
+      <label for="first-name">First name</label>
+      <input id="first-name" name="first_name"
+             autocomplete="given-name" placeholder="Your first name">
+
+      <label for="last-name">Last name</label>
+      <input id="last-name" name="last_name"
+             autocomplete="family-name" placeholder="Your last name">
+    </div>
+
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="email"
+           autocomplete="email" placeholder="you@example.com" required>
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password"
+           autocomplete="current-password"
+           placeholder="At least 8 characters" minlength="8" required>
+
+    <button id="auth-submit" type="submit">Log in →</button>
+    <p id="auth-status" role="status" aria-live="polite"></p>
+
+    <p style="font-size:13px;color:#778096;text-align:center">
+      <span id="switch-prompt">New to ResumeIQ?</span>
+      <button id="switch-auth" type="button"
+              style="width:auto;padding:5px 8px;background:transparent;color:#6254df">
+        Create account
+      </button>
+    </p>
+  </form>
+
+  <section class="panel">
+    <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      YOUR WORKSPACE
+    </p>
+    <h2>Smarter recruitment starts here</h2>
+    <p style="color:#778096;font-size:14px;line-height:1.8">
+      ResumeIQ uses NLP-powered classification to help organize resumes
+      into predicted job categories.
+    </p>
+
+    <div style="padding:20px;background:#f8f7ff;border-radius:14px;margin-top:24px">
+      <p style="color:#5145d5;font-weight:700">✦ NLP-powered classification</p>
+      <p style="font-size:13px;color:#778096;line-height:1.7">
+        Candidates can upload a PDF resume and receive a predicted job category.
+        HR personnel can review the submitted resume records.
+      </p>
+    </div>
+  </section>
+</section>
+
+<!-- ACCOUNT INFORMATION -->
+<section id="app-section" hidden>
+  <section class="panel" style="margin-bottom:22px">
+    <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      YOUR ACCOUNT
+    </p>
+    <h2 id="welcome-title">Welcome to ResumeIQ</h2>
+    <p id="user-details" style="color:#778096;font-size:13px"></p>
+    <span id="role-badge" class="role-label"></span>
+
+    <div style="margin-top:22px">
+      <button id="settings-btn" type="button"
+              style="width:auto;padding:11px 20px">
+        Profile &amp; Settings
+      </button>
+      <button id="logout-btn" type="button"
+              style="width:auto;padding:11px 20px;margin-top:14px">
+        Log out
+      </button>
+    </div>
+  </section>
+</section>
+
+<!-- PROFILE & SETTINGS -->
+<section id="settings-section" hidden>
+  <section class="panel" style="margin-bottom:22px">
+    <h2>Profile &amp; Settings</h2>
+    <p style="color:#778096;font-size:13px">
+      Manage your profile information and password.
+    </p>
+
+    <div class="workspace" style="margin-top:22px">
+      <form id="profile-form">
+        <h3>Update Profile</h3>
+        <label for="profile-first-name">First name</label>
+        <input id="profile-first-name" name="first_name"
+               autocomplete="given-name" required maxlength="100">
+        <label for="profile-last-name">Last name</label>
+        <input id="profile-last-name" name="last_name"
+               autocomplete="family-name" required maxlength="100">
+        <button type="submit">Save profile</button>
+        <p id="profile-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <form id="password-form">
+        <h3>Change Password</h3>
+        <label for="current-password">Current password</label>
+        <input id="current-password" name="current_password"
+               type="password" autocomplete="current-password" required>
+        <label for="new-password">New password</label>
+        <input id="new-password" name="new_password"
+               type="password" autocomplete="new-password"
+               minlength="8" maxlength="128" required>
+        <label for="confirm-new-password">Confirm New Password</label>
+        <input id="confirm-new-password" name="confirm_new_password"
+               type="password" autocomplete="new-password"
+               minlength="8" maxlength="128" required>
+        <button type="submit">Change password</button>
+        <p id="password-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <button id="settings-back-btn" type="button"
+            style="width:auto;padding:11px 20px;margin-top:14px">
+      Back to Workspace
+    </button>
+  </section>
+</section>
+
+<!-- CANDIDATE PORTAL -->
+<section id="candidate-workspace" hidden>
+  <section class="workspace">
+    <form id="resume-form">
+      <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+        CANDIDATE INTAKE
+      </p>
+      <h2>Upload a resume</h2>
+      <p style="color:#778096;font-size:13px">
+        Choose a PDF document to begin screening.
+      </p>
+
+      <label for="resume-file">Resume PDF</label>
+      <input type="file" id="resume-file"
+             accept=".pdf,application/pdf" required>
+
+      <button id="submit-btn" type="submit">Analyze resume →</button>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="panel">
+      <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+        AI ANALYSIS
+      </p>
+      <h2>Screening results</h2>
+      <p style="color:#778096;font-size:13px">
+        Your predicted category and extracted text.
+      </p>
+
+      <div id="placeholder" style="padding:28px 0;text-align:center;color:#9298ab">
+        <div style="font-size:38px;color:#a59af8">✧</div>
+        <h3>Waiting for a resume</h3>
+        <p style="font-size:13px">
+          Your results will appear here after analysis.
+        </p>
+      </div>
+
+      <div id="results" hidden>
+        <p style="color:#16845c;font-size:12px">
+          ✓ &nbsp; Resume classified successfully
+        </p>
+        <p style="font-size:10px;letter-spacing:1.5px;color:#9095a8">
+          PREDICTED JOB CATEGORY
+        </p>
+        <h3 id="category">-</h3>
+        <p style="font-size:13px;color:#778096">
+          Confidence Score: <strong id="confidence-score">-</strong>
+        </p>
+        <h3>Extracted Resume Text</h3>
+        <pre id="extracted-text"></pre>
+      </div>
+    </section>
+  </section>
+
+  <section id="history-panel" class="panel" style="margin-top:22px">
+    <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      YOUR RECORDS
+    </p>
+    <h2>Resume History</h2>
+    <p style="color:#778096;font-size:13px">
+      Your previously classified resumes.
+    </p>
+    <p id="history-status" role="status">
+      Your resume history will appear here.
+    </p>
+    <div id="resume-history"></div>
+  </section>
+</section>
+
+<!-- HR PORTAL -->
+<section id="hr-section" hidden>
+  <section class="panel">
+    <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      HUMAN RESOURCES
+    </p>
+    <h2>HR Dashboard</h2>
+    <p style="color:#778096;font-size:13px;line-height:1.7">
+      Review candidate resume submissions and explore predicted job categories.
+    </p>
+
+    <div class="dashboard-grid">
+      <div class="metric-card">
+        <p>Total resumes</p>
+        <h3 id="metric-total">—</h3>
+      </div>
+      <div class="metric-card">
+        <p>Unique candidates</p>
+        <h3 id="metric-candidates">—</h3>
+      </div>
+      <div class="metric-card">
+        <p>Job categories</p>
+        <h3 id="metric-categories">—</h3>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="panel" id="hr-analytics" style="margin-top:22px">
+    <p
+style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      ANALYTICS & INSIGHTS
+    </p>
+    <h2>Resume Analytics</h2>
+    <p style="color:#778096;font-size:13px">
+      Visual insights based on submitted resumes.
+    </p>
+
+    <div class="analytics-grid">
+      <div class="chart-card">
+        <h3>Resume Distribution</h3>
+        <p>Share of resumes by predicted category</p>
+        <canvas id="category-pie-chart" height="240"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3>Top 10 Job Categories</h3>
+        <p>Number of resumes in each category</p>
+        <canvas id="category-bar-chart" height="240"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3>Daily Uploads</h3>
+        <p>Resume submissions over time</p>
+        <canvas id="daily-line-chart" height="240"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:22px">
+    <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      CANDIDATE MANAGEMENT
+    </p>
+    <h2>Resume Management</h2>
+    <p style="color:#778096;font-size:13px">
+      Search and filter submitted resumes.
+    </p>
+
+    <div class="hr-controls">
+      <input id="hr-search" type="search"
+             placeholder="Search name, email or filename"
+             aria-label="Search resumes">
+
+      <select id="hr-category-filter" aria-label="Filter by category">
+        <option value="">All categories</option>
+      </select>
+    </div>
+
+    <p id="hr-status" role="status" aria-live="polite">
+      Resume records will appear here.
+    </p>
+    <div id="hr-resume-list"></div>
+
+    <button id="hr-refresh" type="button"
+            style="width:auto;padding:11px 18px;margin-top:16px">
+      Refresh records
+    </button>
+  </section>
+
+  <section class="panel" id="hr-user-management" style="margin-top:22px">
+    <p style="color:#7061e9;font-size:10px;font-weight:700;letter-spacing:1.5px">
+      ACCOUNT ADMINISTRATION
+    </p>
+    <h2>User Management</h2>
+    <p style="color:#778096;font-size:13px">
+      View registered candidates and HR accounts.
+    </p>
+    <button id="hr-users-refresh" type="button"
+            style="width:auto;padding:11px 18px;margin-top:8px">
+      Refresh users
+    </button>
+    <p id="hr-users-status" role="status" aria-live="polite">
+      User records will appear here.
+    </p>
+    <div id="hr-user-list"></div>
+  </section>
+</section>
+
+<footer style="padding-top:28px;color:#9298ab;font-size:11px">
+  ResumeIQ &nbsp; · &nbsp; WEX 428 Project &nbsp; · &nbsp;
+  NLP-powered resume classification
+</footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const authForm = document.getElementById('auth-form');
+const authSection = document.getElementById('auth-section');
+const appSection = document.getElementById('app-section');
+const settingsSection = document.getElementById('settings-section');
+const candidateWorkspace = document.getElementById('candidate-workspace');
+const hrSection = document.getElementById('hr-section');
+
+const authStatus = document.getElementById('auth-status');
+const nameFields = document.getElementById('name-fields');
+const firstName = document.getElementById('first-name');
+const lastName = document.getElementById('last-name');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const authTitle = document.getElementById('auth-title');
+const authDescription = document.getElementById('auth-description');
+const authSubmit = document.getElementById('auth-submit');
+const switchPrompt = document.getElementById('switch-prompt');
+const switchAuth = document.getElementById('switch-auth');
+
+let authMode = 'login';
+let currentUserRole = null;
+let hrResumeRecords = [];
+
+function setAuthMode(mode) {
+  authMode = mode;
+  const registering = mode === 'register';
+
+  nameFields.hidden = !registering;
+  firstName.required = registering;
+  lastName.required = registering;
+
+  passwordInput.autocomplete = registering ? 'new-password' : 'current-password';
+  authTitle.textContent = registering ? 'Create your account' : 'Welcome back';
+  authDescription.textContent = registering
+    ? 'Create a candidate account to join ResumeIQ.'
+    : 'Log in to access your ResumeIQ workspace.';
+  authSubmit.textContent = registering ? 'Create account →' : 'Log in →';
+  switchPrompt.textContent = registering
+    ? 'Already have an account?'
+    : 'New to ResumeIQ?';
+  switchAuth.textContent = registering ? 'Log in' : 'Create account';
+  authStatus.textContent = '';
+  authStatus.style.color = '';
+}
+
+switchAuth.addEventListener('click', () => {
+  setAuthMode(authMode === 'login' ? 'register' : 'login');
+});
+
+document.getElementById('settings-btn').addEventListener('click', () => {
+  settingsSection.hidden = false;
+  candidateWorkspace.hidden = true;
+  hrSection.hidden = true;
+});
+
+document.getElementById('settings-back-btn').addEventListener('click', () => {
+  settingsSection.hidden = true;
+  candidateWorkspace.hidden = currentUserRole !== 'candidate';
+  hrSection.hidden = currentUserRole !== 'hr';
+});
+
+function showWorkspace(user) {
+  currentUserRole = user.role;
+
+  authSection.hidden = true;
+  appSection.hidden = false;
+
+  document.getElementById('welcome-title').textContent =
+    'Welcome, ' + user.first_name + '!';
+
+  document.getElementById('user-details').textContent =
+    user.email + ' · Role: ' + user.role;
+
+  document.getElementById('role-badge').textContent =
+    user.role === 'hr' ? 'HR PERSONNEL' : 'CANDIDATE';
+
+  document.getElementById('profile-first-name').value =
+    user.first_name || '';
+  document.getElementById('profile-last-name').value =
+    user.last_name || '';
+
+  candidateWorkspace.hidden = user.role !== 'candidate';
+  hrSection.hidden = user.role !== 'hr';
+
+  if (user.role === 'hr') {
+    loadHRResumes();
+    loadHRUsers();
+  } else {
+    loadResumeHistory();
+  }
+}
+
+function addTextElement(parent, tag, text, style) {
+  const element = document.createElement(tag);
+  element.textContent = text;
+
+  if (style) {
+    element.style.cssText = style;
+  }
+
+  parent.appendChild(element);
+  return element;
+}
+
+async function loadResumeHistory() {
+  const status = document.getElementById('history-status');
+  const container = document.getElementById('resume-history');
+
+  status.textContent = 'Loading resume history...';
+  container.replaceChildren();
+
+  try {
+    const response = await fetch('/my-resumes');
+
+    if (!response.ok) {
+      throw new Error('Could not load resume history.');
+    }
+
+    const data = await response.json();
+    const resumes = data.resumes || [];
+
+    if (resumes.length === 0) {
+      status.textContent = 'No resumes uploaded yet.';
+      return;
+    }
+
+    status.textContent = 'Your previously classified resumes:';
+
+    resumes.forEach((resume) => {
+      const card = document.createElement('div');
+      card.className = 'resume-card';
+
+      addTextElement(card, 'h3', resume.filename);
+      addTextElement(
+        card,
+        'p',
+        'Predicted category: ' + (resume.category || 'Not available')
+      );
+
+      addTextElement(
+        card,
+        'p',
+        'Confidence Score: ' +
+          (typeof resume.confidence === 'number'
+            ? resume.confidence.toFixed(2) + '%'
+            : 'Not available')
+      );
+
+      if (resume.uploaded_at) {
+        addTextElement(
+          card,
+          'p',
+          'Uploaded: ' + new Date(resume.uploaded_at).toLocaleString()
+        );
+      }
+
+      container.appendChild(card);
+    });
+  } catch (error) {
+    status.textContent = error.message;
+  }
+}
+
+function updateHRMetrics(resumes) {
+  const candidates = new Set(
+    resumes.map((resume) => resume.candidate_email).filter(Boolean)
+  );
+
+  const categories = new Set(
+    resumes.map((resume) => resume.category).filter(Boolean)
+  );
+
+  document.getElementById('metric-total').textContent = resumes.length;
+  document.getElementById('metric-candidates').textContent = candidates.size;
+  document.getElementById('metric-categories').textContent = categories.size;
+}
+
+function populateCategoryFilter(resumes) {
+  const select = document.getElementById('hr-category-filter');
+  const selectedValue = select.value;
+
+  const categories = [...new Set(
+    resumes.map((resume) => resume.category).filter(Boolean)
+  )].sort();
+
+  select.replaceChildren();
+
+  const allOption = document.createElement('option');
+  allOption.value = '';
+  allOption.textContent = 'All categories';
+  select.appendChild(allOption);
+
+  categories.forEach((category) => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    select.appendChild(option);
+  });
+
+  if (categories.includes(selectedValue)) {
+    select.value = selectedValue;
+  }
+}
+
+function renderHRResumes() {
+  const container = document.getElementById('hr-resume-list');
+  const status = document.getElementById('hr-status');
+  const search = document.getElementById('hr-search').value.trim().toLowerCase();
+  const categoryFilter = document.getElementById('hr-category-filter').value;
+
+  container.replaceChildren();
+
+  const filtered = hrResumeRecords.filter((resume) => {
+    const searchableText = [
+      resume.filename,
+      resume.candidate_name,
+      resume.candidate_email,
+      resume.category
+    ].filter(Boolean).join(' ').toLowerCase();
+
+    const matchesSearch = searchableText.includes(search);
+    const matchesCategory = !categoryFilter || resume.category === categoryFilter;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  if (filtered.length === 0) {
+    status.textContent = hrResumeRecords.length === 0
+      ? 'No resume records have been submitted yet.'
+      : 'No resumes match your search or selected category.';
+    return;
+  }
+
+  status.textContent = 'Showing ' + filtered.length + ' of ' +
+    hrResumeRecords.length + ' resume records.';
+
+  filtered.forEach((resume) => {
+    const card = document.createElement('article');
+    card.className = 'resume-card';
+
+    addTextElement(card, 'h3', resume.filename || 'Unnamed resume');
+
+    addTextElement(
+      card,
+      'p',
+      'Candidate: ' + (resume.candidate_name || 'Not available')
+    );
+
+    addTextElement(
+      card,
+      'p',
+      'Email: ' + (resume.candidate_email || 'Not available')
+    );
+
+    const category = document.createElement('span');
+    category.className = 'role-label';
+    category.textContent = resume.category || 'Unclassified';
+    card.appendChild(category);
+
+    addTextElement(
+      card,
+      'p',
+      'Confidence Score: ' +
+        (typeof resume.confidence === 'number'
+          ? resume.confidence.toFixed(2) + '%'
+          : 'Not available')
+    );
+
+    if (resume.uploaded_at) {
+      addTextElement(
+        card,
+        'p',
+        'Uploaded: ' + new Date(resume.uploaded_at).toLocaleString()
+      );
+    }
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href =
+      '/hr/resumes/' + encodeURIComponent(resume.id) + '/download';
+    downloadLink.textContent = 'Download PDF';
+    downloadLink.className = 'button';
+    downloadLink.setAttribute('aria-label', 'Download PDF: ' + (resume.filename || 'resume'));
+    card.appendChild(downloadLink);
+
+    container.appendChild(card);
+  });
+}
+
+
+let hrCategoryPieChart = null;
+let hrCategoryBarChart = null;
+let hrDailyLineChart = null;
+
+function renderHRCharts(resumes) {
+  if (typeof Chart === 'undefined') {
+    console.error('Chart.js could not be loaded.');
+    return;
+  }
+
+  const categoryCounts = {};
+  const dailyCounts = {};
+
+  resumes.forEach((resume) => {
+    const category = resume.category || 'Unclassified';
+    categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+
+    if (resume.uploaded_at) {
+      const day = String(resume.uploaded_at).slice(0, 10);
+      dailyCounts[day] = (dailyCounts[day] || 0) + 1;
+    }
+  });
+
+  const categoryEntries = Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1]);
+
+  const pieCanvas = document.getElementById('category-pie-chart');
+  const barCanvas = document.getElementById('category-bar-chart');
+  const lineCanvas = document.getElementById('daily-line-chart');
+
+  [hrCategoryPieChart, hrCategoryBarChart, hrDailyLineChart]
+    .forEach((chart) => {
+      if (chart) chart.destroy();
+    });
+
+  hrCategoryPieChart = null;
+  hrCategoryBarChart = null;
+  hrDailyLineChart = null;
+
+  if (!pieCanvas || !barCanvas || !lineCanvas) return;
+
+  if (categoryEntries.length) {
+    hrCategoryPieChart = new Chart(pieCanvas, {
+      type: 'pie',
+      data: {
+        labels: categoryEntries.map(([category]) => category),
+        datasets: [{
+          data: categoryEntries.map(([, count]) => count)
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+
+    const topCategories = categoryEntries.slice(0, 10);
+
+    hrCategoryBarChart = new Chart(barCanvas, {
+      type: 'bar',
+      data: {
+        labels: topCategories.map(([category]) => category),
+        datasets: [{
+          label: 'Number of resumes',
+          data: topCategories.map(([, count]) => count)
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+          x: { beginAtZero: true, ticks: { precision: 0 } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  const dailyEntries = Object.entries(dailyCounts)
+    .sort((a, b) => a[0].localeCompare(b[0]));
+
+  if (dailyEntries.length) {
+    hrDailyLineChart = new Chart(lineCanvas, {
+      type: 'line',
+      data: {
+        labels: dailyEntries.map(([day]) => day),
+        datasets: [{
+          label: 'Resumes uploaded',
+          data: dailyEntries.map(([, count]) => count),
+          tension: 0.25,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+          y: { beginAtZero: true, ticks: { precision: 0 } }
+        }
+      }
+    });
+  }
+}
+
+async function loadHRResumes() {
+  const status = document.getElementById('hr-status');
+  status.textContent = 'Loading candidate records...';
+
+  try {
+    const response = await fetch('/hr/resumes');
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Please log in again to access the HR dashboard.');
+      }
+
+      if (response.status === 403) {
+        throw new Error('An HR account is required to view all resumes.');
+      }
+
+      throw new Error('Could not load candidate records.');
+    }
+
+    const data = await response.json();
+    hrResumeRecords = data.resumes || [];
+
+    updateHRMetrics(hrResumeRecords);
+    renderHRCharts(hrResumeRecords);
+    populateCategoryFilter(hrResumeRecords);
+    renderHRResumes();
+  } catch (error) {
+    hrResumeRecords = [];
+    updateHRMetrics([]);
+    renderHRCharts([]);
+    document.getElementById('hr-resume-list').replaceChildren();
+    status.textContent = error.message;
+  }
+}
+
+document.getElementById('hr-search').addEventListener('input', renderHRResumes);
+
+document.getElementById('hr-category-filter')
+  .addEventListener('change', renderHRResumes);
+
+document.getElementById('hr-refresh').addEventListener('click', loadHRResumes);
+
+document.getElementById('profile-form').addEventListener(
+  'submit', async (event) => {
+    event.preventDefault();
+
+    const status = document.getElementById('profile-status');
+    const button = event.currentTarget.querySelector('button[type="submit"]');
+    status.style.color = '#778096';
+    status.textContent = 'Saving profile...';
+    button.disabled = true;
+
+    try {
+      const response = await fetch('/auth/profile', {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          first_name: document.getElementById('profile-first-name').value.trim(),
+          last_name: document.getElementById('profile-last-name').value.trim()
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.detail || 'Could not update profile.');
+      }
+
+      showWorkspace(result.user);
+      status.style.color = '#16803c';
+      status.textContent = result.message || 'Profile updated successfully.';
+    } catch (error) {
+      status.style.color = '#b42318';
+      status.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  }
+);
+
+document.getElementById('password-form').addEventListener(
+  'submit', async (event) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const status = document.getElementById('password-status');
+    const button = form.querySelector('button[type="submit"]');
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword =
+      document.getElementById('confirm-new-password').value;
+
+    status.style.color = '#778096';
+
+    if (newPassword !== confirmPassword) {
+      status.style.color = '#b42318';
+      status.textContent = 'New passwords do not match.';
+      return;
+    }
+
+    status.textContent = 'Changing password...';
+    button.disabled = true;
+
+    try {
+      const response = await fetch('/auth/change-password', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          current_password: document.getElementById('current-password').value,
+          new_password: document.getElementById('new-password').value
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.detail || 'Could not change password.');
+      }
+
+      form.reset();
+      status.style.color = '#16803c';
+      status.textContent = result.message || 'Password changed successfully.';
+    } catch (error) {
+      status.style.color = '#b42318';
+      status.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  }
+);
+
+async function checkSession() {
+  try {
+    const response = await fetch('/auth/me');
+
+    if (response.ok) {
+      const user = await response.json();
+      showWorkspace(user);
+    }
+  } catch (error) {
+    console.error('Could not check login session.', error);
+  }
+}
+
+authForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  authSubmit.disabled = true;
+  authStatus.style.color = '#778096';
+  authStatus.textContent = authMode === 'register'
+    ? 'Creating your account...'
+    : 'Logging in...';
+
+  const payload = {
+    email: emailInput.value.trim(),
+    password: passwordInput.value
+  };
+
+  if (authMode === 'register') {
+    payload.first_name = firstName.value.trim();
+    payload.last_name = lastName.value.trim();
+  }
+
+  try {
+    let response = await fetch('/auth/' + authMode, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+
+    let result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.detail || 'Request failed.');
+    }
+
+    if (authMode === 'register') {
+      authStatus.textContent = 'Account created. Logging you in...';
+
+      response = await fetch('/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: payload.email,
+          password: payload.password
+        })
+      });
+
+      result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.detail || 'Account created, but login failed. Please log in.'
+        );
+      }
+    }
+
+    authStatus.textContent = 'Login successful.';
+    showWorkspace(result.user);
+  } catch (error) {
+    authStatus.style.color = '#b42318';
+    authStatus.textContent = error.message;
+  } finally {
+    authSubmit.disabled = false;
+  }
+});
+
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  try {
+    const response = await fetch('/auth/logout', {method: 'POST'});
+
+    if (!response.ok) {
+      throw new Error('Logout failed.');
+    }
+
+    currentUserRole = null;
+    hrResumeRecords = [];
+
+    appSection.hidden = true;
+    settingsSection.hidden = true;
+    candidateWorkspace.hidden = true;
+    hrSection.hidden = true;
+    authSection.hidden = false;
+
+    authForm.reset();
+    setAuthMode('login');
+
+    document.getElementById('status').textContent = '';
+    document.getElementById('results').hidden = true;
+    document.getElementById('placeholder').hidden = false;
+
+    document.getElementById('resume-history').replaceChildren();
+    document.getElementById('history-status').textContent =
+      'Your resume history will appear here.';
+
+    document.getElementById('hr-resume-list').replaceChildren();
+    document.getElementById('hr-status').textContent =
+      'Resume records will appear here.';
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+document.getElementById('resume-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const input = document.getElementById('resume-file');
+  const status = document.getElementById('status');
+  const button = document.getElementById('submit-btn');
+
+  if (!input.files.length) {
+    status.textContent = 'Please select a PDF file.';
+    return;
+  }
+
+  const data = new FormData();
+  data.append('file', input.files[0]);
+
+  status.style.color = '#778096';
+  status.textContent = 'Classifying resume...';
+  button.disabled = true;
+
+  try {
+    const response = await fetch('/predict-pdf', {
+      method: 'POST',
+      body: data
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.detail || 'Classification failed.');
+    }
+
+    document.getElementById('category').textContent =
+      result.predicted_category;
+
+    document.getElementById('confidence-score').textContent =
+      `${Number(result.confidence).toFixed(2)}%`;
+
+    document.getElementById('extracted-text').textContent =
+      result.extracted_text;
+
+    document.getElementById('placeholder').hidden = true;
+    document.getElementById('results').hidden = false;
+
+    status.style.color = '#16845c';
+    status.textContent = 'Classification complete.';
+
+    await loadResumeHistory();
+  } catch (error) {
+    status.style.color = '#b42318';
+    status.textContent = 'Error: ' + error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+checkSession();
+
+async function loadHRUsers() {
+  const status = document.getElementById('hr-users-status');
+  const container = document.getElementById('hr-user-list');
+
+  status.textContent = 'Loading user accounts...';
+  container.replaceChildren();
+
+  try {
+    const response = await fetch('/auth/users');
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Please log in again to view user accounts.');
+      }
+      if (response.status === 403) {
+        throw new Error('An HR account is required to view user accounts.');
+      }
+      throw new Error('Could not load user accounts.');
+    }
+
+    const data = await response.json();
+    const users = data.users || [];
+
+    if (users.length === 0) {
+      status.textContent = 'No user accounts found.';
+      return;
+    }
+
+    status.textContent = 'Registered user accounts: ' + users.length;
+
+    users.forEach((user) => {
+      const card = document.createElement('div');
+      card.className = 'resume-card';
+
+      addTextElement(
+        card,
+        'h3',
+        [user.first_name, user.last_name].filter(Boolean).join(' ')
+      );
+      addTextElement(card, 'p', 'Email: ' + user.email);
+      addTextElement(card, 'p', 'Role: ' + user.role);
+
+      if (user.created_at) {
+        addTextElement(
+          card,
+          'p',
+          'Registered: ' + new Date(user.created_at).toLocaleString()
+        );
+      }
+
+      container.appendChild(card);
+    });
+  } catch (error) {
+    container.replaceChildren();
+    status.textContent = error.message;
+  }
+}
+
+document.getElementById('hr-users-refresh')
+  .addEventListener('click', loadHRUsers);
+
+</script>
+</body>
+</html>

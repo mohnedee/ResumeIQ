@@ -1,0 +1,46 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets and environment variables
+.session_secret
+.env
+.env.*
+!.env.example
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded resumes and generated files
+uploads/
+*.pdf
+
+# Temporary files and backups
+*.before_*
+*.backup
+*.bak
+.DS_Store
+
+# Old machine learning models
+models/best_model.joblib
+models/best_model_backup.joblib
+models/best_model_before_calibration.joblib
+
+# Additional backup files
+*_before_*
+
+# Resume dataset - keep local, do not publish raw resumes
+data/Resume.csv
+
+# Ignore all backup files
+*.backup*
